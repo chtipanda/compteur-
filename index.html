@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compteur By Chtipanda</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        #number {
+            font-size: 80px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            font-size: 28px;
+            padding: 15px 30px;
+            cursor: pointer;
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        button:active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        #reset {
+            background-color: #f0f0f0;
+        }
+        .step-label {
+            margin-top: 40px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 90%;
+        }
+        .steps button {
+            font-size: 20px;
+            padding: 8px 16px;
+        }
+        .steps button.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        #custom {
+            font-size: 20px;
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="number">0</div>
+
+    <div class="buttons">
+        <button id="minus" onclick="change(-1)">-1</button>
+        <button id="reset" onclick="reset()">Reset</button>
+        <button id="plus" onclick="change(1)">+1</button>
+    </div>
+
+    <div class="step-label">Pas :</div>
+    <div class="steps" id="steps">
+        <button data-step="1" class="active">1</button>
+        <button data-step="2">2</button>
+        <button data-step="3">3</button>
+        <button data-step="4">4</button>
+        <button data-step="5">5</button>
+        <button data-step="10">10</button>
+        <input id="custom" type="number" min="1" placeholder="autre">
+    </div>
+
+    <script>
+        let count = 0;
+        let step = 1;
+        const numberDisplay = document.getElementById('number');
+        const minus = document.getElementById('minus');
+        const plus = document.getElementById('plus');
+        const custom = document.getElementById('custom');
+        const stepButtons = document.querySelectorAll('#steps button');
+
+        function setStep(value) {
+            step = value;
+            minus.textContent = '-' + step;
+            plus.textContent = '+' + step;
+        }
+
+        stepButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                stepButtons.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                custom.value = '';
+                setStep(parseInt(btn.dataset.step, 10));
+            });
+        });
+
+        custom.addEventListener('input', function () {
+            const v = parseInt(custom.value, 10);
+            if (v > 0) {
+                stepButtons.forEach(function (b) { b.classList.remove('active'); });
+                setStep(v);
+            }
+        });
+
+        function change(sign) {
+            count += sign * step;
+            numberDisplay.textContent = count;
+        }
+
+        function reset() {
+            count = 0;
+            numberDisplay.textContent = count;
+        }
+    </script>
+
+</body>
+</html>
